@@ -1,0 +1,25 @@
+{
+  "name": "smsapi/mautic-plugin",
+  "type": "mautic-plugin",
+  "description": "mautic-plugin",
+  "repositories": [
+    {
+      "url": "https://github.com/mautic/mautic.git",
+      "type": "github"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "MauticPlugin\\MauticSmsapiBundle\\": ""
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7",
+    "smsapi/php-client": "2.1.*",
+    "mautic/composer-plugin": "^1.0",
+    "mautic/core": "^2"
+  },
+  "replace": {
+    "willdurand/oauth-server-bundle": "*"
+  }
+}
