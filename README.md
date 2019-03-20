@@ -1,6 +1,6 @@
 # SMSAPI plugin for Mautic
 
-Integration SMSAPI.pl and SMSAPI.com with Mautic.
+Integration [SMSAPI.pl](https://www.smsapi.pl) and [SMSAPI.com](https://www.smsapi.com) with Mautic.
 
 ## Requirements
 
