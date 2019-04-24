@@ -34,10 +34,14 @@ class SmsapiApi extends AbstractSmsApi
         }
 
         $sendername = $this->smsApiPlugin->getSendername();
+        $phoneNumber = $lead->getLeadPhoneNumber();
+        if ($phoneNumber === null) {
+            return false;
+        }
 
         try {
-            $this->smsApiGateway->sendSms($lead->getPhone(), $content, $sendername);
-            $this->logger->notice('Send SMS to ' . $lead->getName() . ' on number ' . $lead->getPhone());
+            $this->smsApiGateway->sendSms($phoneNumber, $content, $sendername);
+            $this->logger->notice('Send SMS to ' . $lead->getName() . ' on number ' . $phoneNumber);
         } catch (SmsapiClientException $clientException) {
             $this->logger->error('Send SMS to ' . $lead->getName() . ' fail' . $clientException->getMessage());
 
