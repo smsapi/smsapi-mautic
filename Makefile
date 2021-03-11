@@ -1,41 +1,32 @@
 .PHONY: help
 
-USERID=$(shell id -u)
+USERID=www-data
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .DEFAULT_GOAL := help
 
-help:
-	docker-compose exec -u www-data mautic ./app/console
 
-login:
-	docker-compose exec -u www-data mautic bash
+mautic-execute-campaigns:
+	docker-compose exec -u $(USERID) mautic ./app/console mautic:segments:rebuild
+	docker-compose exec -u $(USERID) mautic ./app/console mautic:campaigns:update
+	docker-compose exec -u $(USERID) mautic ./app/console mautic:campaigns:trigger
 
-rebuild-env:
-	sudo rm -Rf ./volumes
-	docker-compose up -d -V --build
-	make copy
+mautic-clear-cache:
+	docker-compose exec -u $(USERID) mautic php -d memory_limit=12800M ./app/console cache:clear
 
-command:
-	docker-compose exec mautic ./app/console
+mautic-seed:
+	docker-compose exec -u $(USERID) mautic php -d memory_limit=12800M ./app/console mautic:install:data
 
-copy:
-	rsync -r --verbose --exclude 'volumes' ./* volumes/app/plugins/MauticSmsapiBundle
+docker-up:
+	docker-compose up -d
 
-change-owner:
-	sudo chmod -R 775 ./volumes/app
+docker-bash:
+	docker-compose exec -u $(USERID) mautic bash
 
-execute-campaigns:
-	make copy
-	docker-compose exec -u www-data mautic ./app/console mautic:segments:rebuild
-	docker-compose exec -u www-data mautic ./app/console mautic:campaigns:update
-	docker-compose exec -u www-data mautic ./app/console mautic:campaigns:trigger
-
-cache:
-	docker-compose exec -u www-data  mautic php -d memory_limit=12800M ./app/console cache:clear
-
-seed:
-	docker-compose exec -u www-data  mautic php -d memory_limit=12800M ./app/console mautic:install:data
+docker-clear-data:
+	docker-compose down | true
+	docker volume rm smsapi-mautic_mautic_data | true
+	docker volume rm smsapi-mautic_smsapi-mautic_database | true
 
