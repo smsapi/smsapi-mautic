@@ -3,6 +3,7 @@
 namespace MauticPlugin\MauticSmsapiBundle\Core;
 
 use MauticPlugin\MauticSmsapiBundle\MauticSmsapiConst;
+use RuntimeException;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
 use Smsapi\Client\SmsapiHttpClient;
@@ -32,13 +33,11 @@ class Connection
      */
     private function createClient(string $apiToken)
     {
-        $httpClient = new SmsapiHttpClient();
-        if ($this->integrationHelper->getServiceName() === MauticSmsapiConst::SERVICE_SMSAPI_PL) {
-            $service = $httpClient->smsapiPlService($apiToken);
-        } else {
-            $service = $httpClient->smsapiComService($apiToken);
+        if(!$apiToken) {
+            throw new RuntimeException('Api token not available');
         }
+        $httpClient = new SmsapiHttpClient();
 
-        return $service;
+        return $httpClient->smsapiPlServiceWithUri($apiToken,MauticSmsapiConst::SMSAPI_URL);
     }
 }

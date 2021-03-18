@@ -25,6 +25,11 @@ class SmsapiPluginMauticAdapter implements SmsapiPluginInterface
         return $integration->getIntegrationSettings()->getIsPublished();
     }
 
+    private function integration(): SmsapiIntegration
+    {
+        return $this->integrationHelper->getIntegrationObject(MauticSmsapiConst::SMSAPI_INTEGRATION_NAME);
+    }
+
     public function getPageTrackableModel(): TrackableModel
     {
         return $this->pageTrackableModel;
@@ -37,9 +42,13 @@ class SmsapiPluginMauticAdapter implements SmsapiPluginInterface
         return $this->config($sendernameConfig);
     }
 
-    private function integration(): SmsapiIntegration
+    private function config(string $keyName, string $default = '')
     {
-        return $this->integrationHelper->getIntegrationObject(MauticSmsapiConst::SMSAPI_INTEGRATION_NAME);
+        $integration = $this->integration();
+
+        $featureSettings = $integration->getIntegrationSettings()->getFeatureSettings();
+
+        return $featureSettings[$keyName] ?? $default;
     }
 
     public function getBearerToken(): string
@@ -51,15 +60,6 @@ class SmsapiPluginMauticAdapter implements SmsapiPluginInterface
 
     public function getServiceName(): string
     {
-        return $this->config(MauticSmsapiConst::CONFIG_SERVICE, MauticSmsapiConst::SERVICE_SMSAPI_PL);
-    }
-
-    private function config(string $keyName, string $default = '')
-    {
-        $integration = $this->integration();
-
-        $featureSettings = $integration->getIntegrationSettings()->getFeatureSettings();
-
-        return $featureSettings[$keyName] ?? $default;
+        return MauticSmsapiConst::SMSAPI_INTEGRATION_NAME;
     }
 }

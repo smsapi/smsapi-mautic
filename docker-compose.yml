@@ -8,6 +8,7 @@ services:
     volumes:
       - mautic_data:/var/www/html
       - .:/var/www/html/plugins/MauticSmsapiBundle
+      - ./mautic:/var/www/html/app
     environment:
       - MAUTIC_DB_HOST=database
       - MAUTIC_DB_USER=root

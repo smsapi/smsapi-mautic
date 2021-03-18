@@ -37,12 +37,12 @@ class SmsapiIntegration extends AbstractIntegration
 
     public function getAuthenticationUrl(): string
     {
-        return 'https://ssl.' . $this->adapter()->getServiceName() . '/' . MauticSmsapiConst::OAUTH_AUTHENTICATION_URL;
+        return MauticSmsapiConst::OAUTH_AUTHENTICATION_URL;
     }
 
     public function getAccessTokenUrl(): string
     {
-        return 'https://ssl.' . $this->adapter()->getServiceName() . '/' . MauticSmsapiConst::OAUTH_API_TOKEN_URL;
+        return  MauticSmsapiConst::OAUTH_API_TOKEN_URL;
     }
 
     public function getAuthScope(): string
@@ -96,25 +96,6 @@ class SmsapiIntegration extends AbstractIntegration
                     'data' => $isConnected ?
                         $this->translator->trans('mautic.sms.config.form.sms.smsapi.success_authenticated')
                         : $this->translator->trans('mautic.sms.config.form.sms.smsapi.no_authentication'),
-                ]
-            );
-        }
-
-        if ($formArea == 'features') {
-            $builder->add(
-                MauticSmsapiConst::CONFIG_SERVICE,
-                ChoiceType::class,
-                [
-                    'label' => 'mautic.sms.config.form.sms.smsapi.service',
-                    'label_attr' => ['class' => 'control-label'],
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                    ],
-                    'choices' => [
-                        MauticSmsapiConst::SERVICE_SMSAPI_PL => MauticSmsapiConst::SERVICE_SMSAPI_PL,
-                        MauticSmsapiConst::SERVICE_SMSAPI_COM => MauticSmsapiConst::SERVICE_SMSAPI_COM,
-                    ],
                 ]
             );
         }

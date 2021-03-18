@@ -4,6 +4,7 @@ namespace MauticPlugin\MauticSmsapiBundle\Core;
 
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Smsapi\Client\Infrastructure\ResponseMapper\ApiErrorException;
+use Throwable;
 
 class SmsapiGatewayImpl implements SmsapiGateway
 {
@@ -20,8 +21,8 @@ class SmsapiGatewayImpl implements SmsapiGateway
 
         try {
             $service->profileFeature()->findProfile();
-        } catch (ApiErrorException $apiErrorException) {
-            return $apiErrorException->getCode() !== 401;
+        } catch (Throwable $apiErrorException) {
+            return false;
         }
 
         return true;
@@ -30,7 +31,6 @@ class SmsapiGatewayImpl implements SmsapiGateway
     public function getSendernames(): array
     {
         $sendernames = $this->connection->smsapiClient()->smsFeature()->sendernameFeature()->findSendernames();
-
         $array = [];
         foreach ($sendernames as $sendername) {
             $array[$sendername->sender] = $sendername->sender;

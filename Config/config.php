@@ -2,6 +2,7 @@
 
 use MauticPlugin\MauticSmsapiBundle\Api\SmsapiApi;
 use MauticPlugin\MauticSmsapiBundle\Core\Connection;
+use MauticPlugin\MauticSmsapiBundle\Core\SmsapiGatewayDecorator;
 use MauticPlugin\MauticSmsapiBundle\Core\SmsapiGatewayImpl;
 use MauticPlugin\MauticSmsapiBundle\Core\SmsapiPluginMauticAdapter;
 use MauticPlugin\MauticSmsapiBundle\Integration\SmsapiIntegration;
@@ -29,6 +30,13 @@ return [
                 ],
             ],
             'mautic.sms.smsapi.gateway' => [
+                'class' => SmsapiGatewayDecorator::class,
+                'arguments' => [
+                    'mautic.sms.smsapi.gateway_impl',
+                    'mautic.sms.smsapi.plugin',
+                ],
+            ],
+            'mautic.sms.smsapi.gateway_impl' => [
                 'class' => SmsapiGatewayImpl::class,
                 'arguments' => [
                     'mautic.sms.smsapi.connection',
