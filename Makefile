@@ -8,15 +8,15 @@ help:
 .DEFAULT_GOAL := help
 
 mautic-execute-campaigns:
-	docker-compose exec -u $(USERID) mautic ./app/console mautic:segments:rebuild
-	docker-compose exec -u $(USERID) mautic ./app/console mautic:campaigns:update
-	docker-compose exec -u $(USERID) mautic ./app/console mautic:campaigns:trigger
+	docker-compose exec -u $(USERID) mautic ./bin/console mautic:segments:rebuild
+	docker-compose exec -u $(USERID) mautic ./bin/console mautic:campaigns:update
+	docker-compose exec -u $(USERID) mautic ./bin/console mautic:campaigns:trigger
 
 mautic-clear-cache:
-	docker-compose exec -u $(USERID) mautic php -d memory_limit=12800M ./app/console cache:clear
+	docker-compose exec -u $(USERID) mautic php -d memory_limit=12800M ./bin/console cache:clear
 
 mautic-seed:
-	docker-compose exec -u $(USERID) mautic php -d memory_limit=12800M ./app/console mautic:install:data
+	docker-compose exec -u $(USERID) mautic php -d memory_limit=12800M ./bin/console mautic:install:data
 
 docker-up:
 	docker-compose up -d

@@ -3,13 +3,13 @@
 namespace MauticPlugin\MauticSmsapiBundle\Api;
 
 use Mautic\LeadBundle\Entity\Lead;
-use Mautic\SmsBundle\Api\AbstractSmsApi;
+use Mautic\SmsBundle\Sms\TransportInterface;
 use MauticPlugin\MauticSmsapiBundle\Core\SmsapiGateway;
 use MauticPlugin\MauticSmsapiBundle\Core\SmsapiPluginInterface;
 use Monolog\Logger;
 use Smsapi\Client\SmsapiClientException;
 
-class SmsapiApi extends AbstractSmsApi
+class SmsapiApi implements TransportInterface
 {
     private $logger;
     private $smsApiGateway;
@@ -23,7 +23,6 @@ class SmsapiApi extends AbstractSmsApi
         $this->logger = $logger;
         $this->smsApiGateway = $smsApiGateway;
         $this->smsApiPlugin = $smsApiPlugin;
-        parent::__construct($smsApiPlugin->getPageTrackableModel());
     }
 
     public function sendSms(Lead $lead, $content)

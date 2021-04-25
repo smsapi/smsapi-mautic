@@ -4,7 +4,7 @@ Integration [SMSAPI.pl](https://www.smsapi.pl) and [SMSAPI.com](https://www.smsa
 
 ## Requirements
 
-1. Mautic 2.15.0
+1. Mautic 3
 2. PHP 7+
 
 ## Installation

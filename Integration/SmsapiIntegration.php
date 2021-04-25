@@ -2,14 +2,64 @@
 
 namespace MauticPlugin\MauticSmsapiBundle\Integration;
 
+use Doctrine\ORM\EntityManager;
+use Mautic\CoreBundle\Helper\CacheStorageHelper;
+use Mautic\CoreBundle\Helper\EncryptionHelper;
+use Mautic\CoreBundle\Helper\PathsHelper;
+use Mautic\CoreBundle\Model\NotificationModel;
+use Mautic\IntegrationsBundle\Integration\ConfigurationTrait;
+use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormInterface;
+use Mautic\LeadBundle\Model\CompanyModel;
+use Mautic\LeadBundle\Model\DoNotContact as DoNotContactModel;
+use Mautic\LeadBundle\Model\FieldModel;
+use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\PluginBundle\Integration\AbstractIntegration;
+use Mautic\PluginBundle\Model\IntegrationEntityModel;
 use MauticPlugin\MauticSmsapiBundle\Core\SmsapiGateway;
 use MauticPlugin\MauticSmsapiBundle\Core\SmsapiPluginInterface;
 use MauticPlugin\MauticSmsapiBundle\MauticSmsapiConst;
+use Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class SmsapiIntegration extends AbstractIntegration
+class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterface
 {
+    use ConfigurationTrait;
+    /**
+     * @var SmsapiGateway
+     */
+    private $gateway;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        CacheStorageHelper $cacheStorageHelper,
+        EntityManager $entityManager,
+        Session $session,
+        RequestStack $requestStack,
+        Router $router,
+        TranslatorInterface $translator,
+        Logger $logger,
+        EncryptionHelper $encryptionHelper,
+        LeadModel $leadModel,
+        CompanyModel $companyModel,
+        PathsHelper $pathsHelper,
+        NotificationModel $notificationModel,
+        FieldModel $fieldModel,
+        IntegrationEntityModel $integrationEntityModel,
+        DoNotContactModel $doNotContact,
+        SmsapiGateway $gateway
+    ) {
+        parent::__construct($eventDispatcher, $cacheStorageHelper, $entityManager, $session, $requestStack, $router,
+            $translator, $logger, $encryptionHelper, $leadModel, $companyModel, $pathsHelper, $notificationModel,
+            $fieldModel, $integrationEntityModel, $doNotContact);
+        $this->gateway = $gateway;
+    }
+
     public function getName(): string
     {
         return MauticSmsapiConst::SMSAPI_INTEGRATION_NAME;
@@ -74,17 +124,12 @@ class SmsapiIntegration extends AbstractIntegration
 
     public function appendToForm(&$builder, $data, $formArea)
     {
-        /**
-         * @var $smsApiGateway SmsapiGateway
-         */
-        $smsApiGateway = $this->factory->get('mautic.sms.smsapi.gateway');
-
-        $isConnected = $smsApiGateway->isConnected();
+        $isConnected = $this->gateway->isConnected();
 
         if ($formArea == 'keys') {
             $builder->add(
                 'connection_status',
-                'text',
+                TextType::class,
                 [
                     'label' => 'mautic.sms.config.form.sms.smsapi.connection_status',
                     'label_attr' => ['class' => 'control-label'],
@@ -104,14 +149,14 @@ class SmsapiIntegration extends AbstractIntegration
             return;
         }
 
-        $sendernames = $smsApiGateway->getSendernames();
-        $profile = $smsApiGateway->getProfile();
+        $sendernames = $this->gateway->getSendernames();
+        $profile = $this->gateway->getProfile();
 
 
         if ($formArea == 'features') {
             $builder->add(
                 'available_points',
-                'number',
+                TextType::class,
                 [
                     'label' => 'mautic.sms.config.form.sms.smsapi.available_points',
                     'label_attr' => ['class' => 'control-label'],
@@ -137,6 +182,16 @@ class SmsapiIntegration extends AbstractIntegration
                 ]
             );
         }
+    }
+
+    public function getConfigFormName(): ?string
+    {
+        return null;
+    }
+
+    public function getConfigFormContentTemplate(): ?string
+    {
+        return null;
     }
 }
 

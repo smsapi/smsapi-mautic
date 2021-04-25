@@ -4,7 +4,7 @@ services:
 
   mautic:
     container_name: mautic
-    image: mautic/mautic:apache
+    image: mautic/mautic:v3-apache
     volumes:
       - ./data/mautic:/var/www/html
       - .:/var/www/html/plugins/MauticSmsapiBundle
@@ -20,7 +20,7 @@ services:
       - "8880:80"
 
   database:
-    image: percona/percona-server:5.7
+    image: powertic/percona-docker
     container_name: database
     environment:
       MYSQL_ROOT_PASSWORD: mypassword

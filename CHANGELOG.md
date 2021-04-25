@@ -1,3 +1,8 @@
+## 2021-04-25
+
+### Changed (1 change)
+
+- Migrate to Mautic version 3
 
 ## 2021-03-18
 
