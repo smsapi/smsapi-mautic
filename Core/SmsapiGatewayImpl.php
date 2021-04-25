@@ -3,7 +3,6 @@
 namespace MauticPlugin\MauticSmsapiBundle\Core;
 
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
-use Smsapi\Client\Infrastructure\ResponseMapper\ApiErrorException;
 use Throwable;
 
 class SmsapiGatewayImpl implements SmsapiGateway

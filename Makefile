@@ -7,7 +7,6 @@ help:
 
 .DEFAULT_GOAL := help
 
-
 mautic-execute-campaigns:
 	docker-compose exec -u $(USERID) mautic ./app/console mautic:segments:rebuild
 	docker-compose exec -u $(USERID) mautic ./app/console mautic:campaigns:update
@@ -27,6 +26,5 @@ docker-bash:
 
 docker-clear-data:
 	docker-compose down | true
-	docker volume rm smsapi-mautic_mautic_data | true
-	docker volume rm smsapi-mautic_smsapi-mautic_database | true
+	docker volume rm smsapi-mautic_database | true
 

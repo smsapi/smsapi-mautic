@@ -4,16 +4,15 @@ services:
 
   mautic:
     container_name: mautic
-    image: mautic/mautic:latest
+    image: mautic/mautic:apache
     volumes:
-      - mautic_data:/var/www/html
+      - ./data/mautic:/var/www/html
       - .:/var/www/html/plugins/MauticSmsapiBundle
-      - ./mautic:/var/www/html/app
     environment:
       - MAUTIC_DB_HOST=database
       - MAUTIC_DB_USER=root
       - MAUTIC_DB_PASSWORD=mypassword
-      - MAUTIC_DB_NAME=mautic3
+      - MAUTIC_DB_NAME=mautic
     restart: always
     networks:
       - mauticnet
@@ -21,7 +20,7 @@ services:
       - "8880:80"
 
   database:
-    image: powertic/percona-docker
+    image: percona/percona-server:5.7
     container_name: database
     environment:
       MYSQL_ROOT_PASSWORD: mypassword
@@ -36,7 +35,6 @@ services:
 
 
 volumes:
-  mautic_data:
   database:
 
 networks:

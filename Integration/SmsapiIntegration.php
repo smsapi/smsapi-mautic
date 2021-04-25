@@ -42,7 +42,7 @@ class SmsapiIntegration extends AbstractIntegration
 
     public function getAccessTokenUrl(): string
     {
-        return  MauticSmsapiConst::OAUTH_API_TOKEN_URL;
+        return MauticSmsapiConst::OAUTH_API_TOKEN_URL;
     }
 
     public function getAuthScope(): string
