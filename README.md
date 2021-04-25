@@ -9,7 +9,7 @@ Integration [SMSAPI.pl](https://www.smsapi.pl) and [SMSAPI.com](https://www.smsa
 
 ## Installation
 
-1. Download https://github.com/smsapi/smsapi-mautic/archive/master.zip
+1. Download https://github.com/smsapi/smsapi-mautic/archive/refs/heads/mautic-v3.zip
 2. Extract it to plugins/MauticSmsapiBundle
 3. Delete  cache `php bin/console cache:clear`
 3. Run `php bin/console mautic:plugins:install`
