@@ -46,5 +46,7 @@ class SmsapiApi implements TransportInterface
 
             return $clientException->getMessage();
         }
+
+        return true;
     }
 }
