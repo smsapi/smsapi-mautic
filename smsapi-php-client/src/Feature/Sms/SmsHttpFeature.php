@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace Smsapi\Client\Feature\Sms;
 
+use Psr\Http\Client\ClientInterface;
 use Smsapi\Client\Feature\Data\DataFactoryProvider;
-use Smsapi\Client\Feature\Sms\Bag\DeleteSmsBag;
+use Smsapi\Client\Feature\Sms\Bag\DeleteScheduledSmssBag;
 use Smsapi\Client\Feature\Sms\Bag\ScheduleSmsBag;
 use Smsapi\Client\Feature\Sms\Bag\ScheduleSmssBag;
 use Smsapi\Client\Feature\Sms\Bag\ScheduleSmsToGroupBag;
@@ -23,13 +24,16 @@ use stdClass;
  */
 class SmsHttpFeature implements SmsFeature
 {
+    private $externalHttpClient;
     private $requestExecutorFactory;
     private $dataFactoryProvider;
 
     public function __construct(
+        ClientInterface $externalHttpClient,
         RequestExecutorFactory $requestExecutorFactory,
         DataFactoryProvider $dataFactoryProvider
     ) {
+        $this->externalHttpClient = $externalHttpClient;
         $this->requestExecutorFactory = $requestExecutorFactory;
         $this->dataFactoryProvider = $dataFactoryProvider;
     }
@@ -37,7 +41,7 @@ class SmsHttpFeature implements SmsFeature
     public function sendernameFeature(): SendernamesFeature
     {
         return new SendernamesHttpFeature(
-            $this->requestExecutorFactory->createRestRequestExecutor(),
+            $this->requestExecutorFactory->createRestRequestExecutor($this->externalHttpClient),
             $this->dataFactoryProvider->provideSendernameFactory()
         );
     }
@@ -197,12 +201,12 @@ class SmsHttpFeature implements SmsFeature
     }
 
     /**
-     * @param DeleteSmsBag $deleteScheduledSmsBag
+     * @param DeleteScheduledSmssBag $deleteScheduledSmsBag
      * @throws SmsapiClientException
      */
-    public function deleteScheduledSms(DeleteSmsBag $deleteScheduledSmsBag)
+    public function deleteScheduledSms(DeleteScheduledSmssBag $deleteScheduledSmsBag)
     {
-        $deleteScheduledSmsBag->schDel = $deleteScheduledSmsBag->smsIds;
+        $deleteScheduledSmsBag->schDel = implode(',', $deleteScheduledSmsBag->smsIds);
         unset($deleteScheduledSmsBag->smsIds);
         $this->makeRequest($deleteScheduledSmsBag);
     }
@@ -214,6 +218,8 @@ class SmsHttpFeature implements SmsFeature
      */
     private function makeRequest($data): stdClass
     {
-        return $this->requestExecutorFactory->createLegacyRequestExecutor()->request('sms.do', (array)$data);
+        return $this->requestExecutorFactory
+            ->createLegacyRequestExecutor($this->externalHttpClient)
+            ->request('sms.do', (array)$data);
     }
 }

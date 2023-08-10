@@ -10,7 +10,6 @@ use DateTimeInterface;
  * @property string $from
  * @property string $message
  * @property string $template
- * @property string $encoding
  * @property array $idx
  * @property bool $checkIdx
  * @property string $partnerId
@@ -26,6 +25,7 @@ use DateTimeInterface;
  * @property string $param3
  * @property string $param4
  */
+#[\AllowDynamicProperties]
 class ScheduleSmsBag
 {
     /** @var string */
@@ -33,6 +33,9 @@ class ScheduleSmsBag
 
     /** @var DateTimeInterface */
     public $date;
+
+    /** @var string */
+    public $encoding = 'utf-8';
 
     public static function withMessage(DateTimeInterface $scheduleAt, string $receiver, string $message): self
     {

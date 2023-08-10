@@ -10,7 +10,6 @@ use DateTimeInterface;
  * @property string $from
  * @property string $message
  * @property string $template
- * @property string $encoding
  * @property array $idx
  * @property bool $checkIdx
  * @property string $partnerId
@@ -26,10 +25,14 @@ use DateTimeInterface;
  * @property string $param3
  * @property string $param4
  */
+#[\AllowDynamicProperties]
 class SendSmsBag
 {
     /** @var string */
     public $to;
+
+    /** @var string */
+    public $encoding = 'utf-8';
 
     public static function withMessage(string $receiver, string $message): self
     {
@@ -61,18 +64,6 @@ class SendSmsBag
     public function setExternalId(string $idx, bool $checkIdx = null): self
     {
         $this->idx = [$idx];
-        $this->checkIdx = $checkIdx;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     * @see SendSmsBag::setExternalId()
-     */
-    public function setIdx(array $idx, bool $checkIdx = null): self
-    {
-        $this->idx = $idx;
         $this->checkIdx = $checkIdx;
 
         return $this;

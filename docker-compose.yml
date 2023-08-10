@@ -4,7 +4,7 @@ services:
 
   mautic:
     container_name: mautic
-    image: mautic/mautic:v3-apache
+    image: mautic/mautic:v4-apache
     volumes:
       - ./data/mautic:/var/www/html
       - .:/var/www/html/plugins/MauticSmsapiBundle
