@@ -1,12 +1,11 @@
 <?php
 
 namespace MauticPlugin\MauticSmsapiBundle\Core;
-
+use Smsapi\Client\Curl\SmsapiHttpClient;
 use MauticPlugin\MauticSmsapiBundle\MauticSmsapiConst;
 use RuntimeException;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
-use Smsapi\Client\SmsapiHttpClient;
 
 class Connection
 {
@@ -36,8 +35,6 @@ class Connection
         if(!$apiToken) {
             throw new RuntimeException('Api token not available');
         }
-        $httpClient = new SmsapiHttpClient();
-
-        return $httpClient->smsapiPlServiceWithUri($apiToken,MauticSmsapiConst::SMSAPI_URL);
+        return (new SmsapiHttpClient())->smsapiPlServiceWithUri($apiToken,MauticSmsapiConst::SMSAPI_URL);
     }
 }

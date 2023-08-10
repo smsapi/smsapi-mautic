@@ -6,7 +6,7 @@ namespace Smsapi\Client\Feature\Contacts\Bag;
 
 /**
  * @api
- * @property integer $phoneNumber
+ * @property string $phoneNumber
  * @property string $email
  * @property string $firstName
  * @property string $lastName
@@ -16,6 +16,7 @@ namespace Smsapi\Client\Feature\Contacts\Bag;
  * @property string $city
  * @property string $source
  */
+#[\AllowDynamicProperties]
 class UpdateContactBag
 {
 
@@ -31,6 +32,12 @@ class UpdateContactBag
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        return $this;
+    }
+
+    public function setCustomField(string $name, string $value): self
+    {
+        $this->$name = $value;
         return $this;
     }
 }

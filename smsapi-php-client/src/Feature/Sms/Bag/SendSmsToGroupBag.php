@@ -10,7 +10,6 @@ use DateTimeInterface;
  * @property string $from
  * @property string $message
  * @property string $template
- * @property string $encoding
  * @property array $idx
  * @property bool $checkIdx
  * @property string $partnerId
@@ -21,10 +20,14 @@ use DateTimeInterface;
  * @property string $notifyUrl
  * @property bool $test
  */
+#[\AllowDynamicProperties]
 class SendSmsToGroupBag
 {
     /** @var string */
     public $group;
+
+    /** @var string */
+    public $encoding = 'utf-8';
 
     public static function withMessage(string $group, string $message): self
     {

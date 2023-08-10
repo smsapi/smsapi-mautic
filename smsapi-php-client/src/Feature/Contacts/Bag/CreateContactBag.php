@@ -6,7 +6,7 @@ namespace Smsapi\Client\Feature\Contacts\Bag;
 
 /**
  * @api
- * @property integer $phoneNumber
+ * @property string $phoneNumber
  * @property string $email
  * @property string $firstName
  * @property string $lastName
@@ -16,13 +16,24 @@ namespace Smsapi\Client\Feature\Contacts\Bag;
  * @property string $city
  * @property string $source
  */
+#[\AllowDynamicProperties]
 class CreateContactBag
 {
-    public function withPhoneNumber(int $phoneNumber): self
+    /**
+     * @deprecated
+     * @see withPhoneNumber
+     */
+    public static function withPhone(string $phoneNumber): self
+    {
+        return self::withPhoneNumber($phoneNumber);
+    }
+
+    public static function withPhoneNumber(string $phoneNumber): self
     {
         $bag = new self();
         $bag->phoneNumber = $phoneNumber;
         return $bag;
+
     }
 
     public static function withEmail(string $email): self
@@ -36,6 +47,12 @@ class CreateContactBag
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        return $this;
+    }
+
+    public function setCustomField(string $name, string $value): self
+    {
+        $this->$name = $value;
         return $this;
     }
 }

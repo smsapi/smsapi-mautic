@@ -15,7 +15,7 @@ class SendernameFactory
     {
         $sendername = new Sendername();
         $sendername->status = $object->status;
-        $sendername->createdAt = new DateTime((string)$object->created_at);
+        $sendername->createdAt = new DateTime($object->created_at);
         $sendername->isDefault = $object->is_default;
         $sendername->sender = $object->sender;
 

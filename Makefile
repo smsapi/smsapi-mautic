@@ -28,3 +28,12 @@ docker-clear-data:
 	docker-compose down | true
 	docker volume rm smsapi-mautic_database | true
 
+
+update-smsapi-lib:
+	curl -L -O https://github.com/smsapi/smsapi-php-client/archive/master.zip
+	unzip -o "master.zip"
+	rm -fr "smsapi-php-client" "master.zip"
+	mv "smsapi-php-client-master" "smsapi-php-client"
+	docker run --rm --interactive --tty --volume ./smsapi-php-client:/app composer dumpautoload -a
+
+

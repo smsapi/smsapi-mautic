@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smsapi\Client\Feature\Data;
 
+use Smsapi\Client\Feature\Blacklist\Data\BlacklistedPhoneNumberFactory;
+use Smsapi\Client\Feature\Contacts\Data\ContactCustomFieldFactory;
 use Smsapi\Client\Feature\Contacts\Data\ContactFactory;
 use Smsapi\Client\Feature\Contacts\Data\ContactGroupFactory;
 use Smsapi\Client\Feature\Contacts\Fields\Data\ContactFieldFactory;
@@ -11,19 +13,15 @@ use Smsapi\Client\Feature\Contacts\Fields\Data\ContactFieldOptionFactory;
 use Smsapi\Client\Feature\Contacts\Groups\Permissions\Data\GroupPermissionFactory;
 use Smsapi\Client\Feature\Hlr\Data\HlrFactory;
 use Smsapi\Client\Feature\Mms\Data\MmsFactory;
+use Smsapi\Client\Feature\Ping\Data\PingFactory;
 use Smsapi\Client\Feature\Profile\Data\MoneyFactory;
 use Smsapi\Client\Feature\Profile\Data\ProfileFactory;
 use Smsapi\Client\Feature\Profile\Data\ProfilePriceCountryFactory;
 use Smsapi\Client\Feature\Profile\Data\ProfilePriceFactory;
 use Smsapi\Client\Feature\Profile\Data\ProfilePriceNetworkFactory;
-use Smsapi\Client\Feature\Push\Data\PushAppFactory;
-use Smsapi\Client\Feature\Push\Data\PushShipmentDispatchDetailsFactory;
-use Smsapi\Client\Feature\Push\Data\PushShipmentFactory;
-use Smsapi\Client\Feature\Push\Data\PushShipmentFallbackFactory;
-use Smsapi\Client\Feature\Push\Data\PushShipmentPayloadFactory;
-use Smsapi\Client\Feature\Push\Data\PushShipmentSummaryFactory;
 use Smsapi\Client\Feature\ShortUrl\Data\ShortUrlLinkFactory;
 use Smsapi\Client\Feature\Sms\Data\SmsFactory;
+use Smsapi\Client\Feature\Mfa\Data\MfaFactory;
 use Smsapi\Client\Feature\Sms\Sendernames\Data\SendernameFactory;
 use Smsapi\Client\Feature\Subusers\Data\SubuserFactory;
 use Smsapi\Client\Feature\Vms\Data\VmsFactory;
@@ -72,6 +70,11 @@ class DataFactoryProvider
         return new SendernameFactory();
     }
 
+    public function provideMfaFactory(): MfaFactory
+    {
+        return new MfaFactory();
+    }
+
     public function provideSubuserFactory(): SubuserFactory
     {
         return new SubuserFactory(new PointsFactory());
@@ -82,20 +85,9 @@ class DataFactoryProvider
         return new ShortUrlLinkFactory();
     }
 
-    public function providePushShipmentFactory(): PushShipmentFactory
-    {
-        return new PushShipmentFactory(
-            new PushAppFactory(),
-            new PushShipmentPayloadFactory(),
-            new PushShipmentSummaryFactory(),
-            new PushShipmentDispatchDetailsFactory(),
-            new PushShipmentFallbackFactory()
-        );
-    }
-
     public function provideContactFactory(): ContactFactory
     {
-        return new ContactFactory($this->provideContactGroupFactory());
+        return new ContactFactory($this->provideContactGroupFactory(), $this->provideConntactCustomFieldFactory());
     }
 
     public function provideContactGroupFactory(): ContactGroupFactory
@@ -116,5 +108,20 @@ class DataFactoryProvider
     public function provideContactFieldOptionFactory(): ContactFieldOptionFactory
     {
         return new ContactFieldOptionFactory();
+    }
+
+    public function provideBlacklistedPhoneNumberFactory(): BlacklistedPhoneNumberFactory
+    {
+        return new BlacklistedPhoneNumberFactory();
+    }
+
+    public function provideConntactCustomFieldFactory(): ContactCustomFieldFactory
+    {
+        return new ContactCustomFieldFactory();
+    }
+
+    public function providePingFactory(): PingFactory
+    {
+        return new PingFactory();
     }
 }

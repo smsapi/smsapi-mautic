@@ -31,12 +31,8 @@ class ContactsHttpFeature implements ContactsFeature
         $this->dataFactoryProvider = $dataFactoryProvider;
     }
 
-    public function findContacts(FindContactsBag $findContactsBag): array
+    public function findContacts(FindContactsBag $findContactsBag = null): array
     {
-        if (isset($findContactsBag->groupId)) {
-            $findContactsBag->groupId = implode(',', $findContactsBag->groupId);
-        }
-
         $result = $this->restRequestExecutor->read('contacts', (array)$findContactsBag);
 
         return array_map(
@@ -73,6 +69,11 @@ class ContactsHttpFeature implements ContactsFeature
     public function deleteContact(DeleteContactBag $deleteContactBag)
     {
         $this->restRequestExecutor->delete('contacts/' . $deleteContactBag->contactId, []);
+    }
+
+    public function deleteContacts()
+    {
+        $this->restRequestExecutor->delete('contacts', []);
     }
 
     public function groupsFeature(): ContactsGroupsFeature

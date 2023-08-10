@@ -80,11 +80,6 @@ class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterfa
         return $this->factory->get('mautic.sms.smsapi.plugin');
     }
 
-    public function getSecretKeys(): array
-    {
-        return ['password'];
-    }
-
     public function getAuthenticationUrl(): string
     {
         return MauticSmsapiConst::OAUTH_AUTHENTICATION_URL;
