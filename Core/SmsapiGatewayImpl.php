@@ -7,6 +7,7 @@ use Throwable;
 
 class SmsapiGatewayImpl implements SmsapiGateway
 {
+    const MAUTIC = 'Mautic';
     private $connection;
 
     public function __construct(Connection $connection)
@@ -49,6 +50,7 @@ class SmsapiGatewayImpl implements SmsapiGateway
         $sms->from = $sendername;
         $sms->encoding = 'utf-8';
         $sms->message = $content;
+        $sms->source = self::MAUTIC;
 
         $service->smsFeature()->sendSms($sms);
     }
