@@ -80,25 +80,10 @@ class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterfa
         return $this->factory->get('mautic.sms.smsapi.plugin');
     }
 
-    public function getAuthenticationUrl(): string
-    {
-        return MauticSmsapiConst::OAUTH_AUTHENTICATION_URL;
-    }
-
-    public function getAccessTokenUrl(): string
-    {
-        return MauticSmsapiConst::OAUTH_API_TOKEN_URL;
-    }
-
-    public function getAuthScope(): string
-    {
-        return MauticSmsapiConst::OAUTH_SCOPES;
-    }
-
     public function getBearerToken($inAuthorization = false)
     {
-        if (!$inAuthorization && isset($this->keys[$this->getAuthTokenKey()])) {
-            return $this->keys[$this->getAuthTokenKey()];
+        if (!$inAuthorization && isset($this->keys['API-Token'])) {
+            return $this->keys['API-Token'];
         }
 
         return false;
@@ -108,13 +93,35 @@ class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterfa
     {
         return [
             'requires_callback' => false,
-            'requires_authorization' => true,
+            'requires_authorization' => false,
+        ];
+    }
+
+    /**
+     * Get a list of keys required to make an API call.  Examples are key, clientId, clientSecret.
+     *
+     * @return array
+     */
+    public function getRequiredKeyFields()
+    {
+        return [
+            'API-Token' => 'mautic.sms.config.form.sms.smsapi.token',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getSecretKeys()
+    {
+        return [
+            'API-Token',
         ];
     }
 
     public function getAuthenticationType(): string
     {
-        return 'oauth2';
+        return 'none';
     }
 
     public function appendToForm(&$builder, $data, $formArea)

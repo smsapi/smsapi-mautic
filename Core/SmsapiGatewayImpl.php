@@ -31,8 +31,11 @@ class SmsapiGatewayImpl implements SmsapiGateway
     {
         $sendernames = $this->connection->smsapiClient()->smsFeature()->sendernameFeature()->findSendernames();
         $array = [];
+
         foreach ($sendernames as $sendername) {
-            $array[$sendername->sender] = $sendername->sender;
+            if($sendername->status === 'ACTIVE') {
+                $array[$sendername->sender] = $sendername->sender;
+            }
         }
 
         return $array;
