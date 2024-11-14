@@ -2,6 +2,7 @@
 
 namespace MauticPlugin\MauticSmsapiBundle\Core;
 
+use MauticPlugin\MauticSmsapiBundle\DataObject\Profile;
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Throwable;
 

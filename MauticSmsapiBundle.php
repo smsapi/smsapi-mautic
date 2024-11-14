@@ -2,9 +2,9 @@
 
 namespace MauticPlugin\MauticSmsapiBundle;
 
-use Mautic\PluginBundle\Bundle\PluginBundleBase;
+use Mautic\IntegrationsBundle\Bundle\AbstractPluginBundle;
 
-class MauticSmsapiBundle extends PluginBundleBase
+class MauticSmsapiBundle extends AbstractPluginBundle
 {
     public function boot()
     {

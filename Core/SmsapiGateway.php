@@ -2,6 +2,8 @@
 
 namespace MauticPlugin\MauticSmsapiBundle\Core;
 
+use MauticPlugin\MauticSmsapiBundle\DataObject\Profile;
+
 interface SmsapiGateway
 {
     public function isConnected(): bool;

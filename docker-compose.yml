@@ -4,10 +4,9 @@ services:
 
   mautic:
     container_name: mautic
-    image: mautic/mautic:v4-apache
+    image: mautic/mautic:5-apache
     volumes:
-      - ./data/mautic:/var/www/html
-      - .:/var/www/html/plugins/MauticSmsapiBundle
+      - .:/var/www/html/docroot/plugins/MauticSmsapiBundle
     environment:
       - MAUTIC_DB_HOST=database
       - MAUTIC_DB_USER=root
