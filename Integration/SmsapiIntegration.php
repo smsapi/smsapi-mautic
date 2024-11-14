@@ -7,6 +7,7 @@ use Mautic\CoreBundle\Helper\CacheStorageHelper;
 use Mautic\CoreBundle\Helper\EncryptionHelper;
 use Mautic\CoreBundle\Helper\PathsHelper;
 use Mautic\CoreBundle\Model\NotificationModel;
+use Mautic\CoreBundle\Translation\Translator;
 use Mautic\IntegrationsBundle\Integration\ConfigurationTrait;
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormInterface;
 use Mautic\LeadBundle\Model\CompanyModel;
@@ -27,6 +28,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
 
+
 class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterface
 {
     use ConfigurationTrait;
@@ -42,7 +44,7 @@ class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterfa
         Session $session,
         RequestStack $requestStack,
         Router $router,
-        TranslatorInterface $translator,
+        Translator $translator,
         Logger $logger,
         EncryptionHelper $encryptionHelper,
         LeadModel $leadModel,
@@ -124,7 +126,7 @@ class SmsapiIntegration extends AbstractIntegration implements ConfigFormInterfa
         return 'none';
     }
 
-    public function appendToForm(&$builder, $data, $formArea)
+    public function appendToForm(&$builder, $data, $formArea):void
     {
         $isConnected = $this->gateway->isConnected();
 

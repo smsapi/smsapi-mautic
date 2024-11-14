@@ -1,6 +1,6 @@
 <?php
 
-namespace MauticPlugin\MauticSmsapiBundle\Core;
+namespace MauticPlugin\MauticSmsapiBundle\DataObject;
 
 class Profile
 {

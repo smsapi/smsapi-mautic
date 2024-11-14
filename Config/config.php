@@ -8,6 +8,7 @@ use MauticPlugin\MauticSmsapiBundle\Core\SmsapiPluginMauticAdapter;
 use MauticPlugin\MauticSmsapiBundle\Integration\SmsapiIntegration;
 use MauticPlugin\MauticSmsapiBundle\MauticSmsapiConst;
 
+
 return [
     'services' => [
         'other' => [
